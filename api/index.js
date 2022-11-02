@@ -1,6 +1,6 @@
 const app = require('express')();
 
-app.get('/api/date', (req, res) => {
+app.get('/api/process_file', (req, res) => {
     res.send("Hello World");
 });
 
