@@ -1,6 +1,6 @@
 const app = require('express')();
 const path = require('path');
-const upload = require('multer')({ dest : 'uploads/' });
+const upload = require('multer')({ dest : './' });
 const fs = require('fs');
 
 app.post('/api/process_file', upload.single("file"), (req, res) => {
