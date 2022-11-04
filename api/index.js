@@ -46,3 +46,5 @@ app.post('/api/process_file', upload.single("file"), (req, res) => {
     // send the data back to the client
     res.send({ data });
 });
+
+module.exports = app;
