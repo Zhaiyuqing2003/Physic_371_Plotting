@@ -43,5 +43,7 @@ const transformBinaryFile = (buffer) => {
         array.push([time, ...data]);
     }
 
+    console.log(array);
+
     return array;
 }

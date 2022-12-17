@@ -1,7 +1,10 @@
 import Plotly from 'plotly.js-dist'
+import { simulate } from './simulation'
 
 window.onload = () => {
     const button = document.getElementById('submit');
+
+    // plotSimulate(...simulate(), "simulation")
 
     button.addEventListener('click', () => {
         const input = document.getElementById('input');
@@ -12,7 +15,7 @@ window.onload = () => {
         const data = new FormData();
         data.append('file', input.files[0]);
 
-        const req = new Request('api/process_file', {
+        const req = new Request('http://localhost:3000/api/process_file', {
             method: 'POST',
             body: data
         });
@@ -52,6 +55,8 @@ const parse = (data) => {
         azRms : offset[11],
     }
 
+    console.log(lsm, lis);
+
     const obj = data.slice(1);
 
     const freq = getFrequency(obj, 0, obj.length - 1);
@@ -62,32 +67,32 @@ const parse = (data) => {
 const plot = (obj, lsm, lis, freq, element) => {
     Plotly.newPlot(element, [{
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[1] - lsm.ax),
+        y: obj.map(line => line[1]),
         type: 'scatter',
         name: 'Accel X (LSM)'
     }, {
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[2] - lsm.ay),
+        y: obj.map(line => line[2]),
         type: 'scatter',
         name: 'Accel Y (LSM)'
     }, {
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[3] - lsm.az),
+        y: obj.map(line => line[3]),
         type: 'scatter',
         name : 'Accel Z (LSM)'
     }, {
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[4] - lis.ax),
+        y: obj.map(line => line[4]),
         type: 'scatter',
         name : 'Accel X (LIS)'
     }, {
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[5] - lis.ay),
+        y: obj.map(line => line[5]),
         type: 'scatter',
         name : 'Accel Y (LIS)'
     }, {
         x: obj.map(line => line[0] / 1_000_000),
-        y: obj.map(line => line[6] - lis.az),
+        y: obj.map(line => line[6]),
         type: 'scatter',
         name : 'Accel Z (LIS)'
     }], {
@@ -96,3 +101,25 @@ const plot = (obj, lsm, lis, freq, element) => {
         title : `Acceleration over time (average frequency: ${freq.toFixed(2)}Hz)`
     })
 }
+
+// const plotSimulate = (t, x, v, a, element) => {
+//     Plotly.newPlot(element, [{
+//         x: t,
+//         y: x,
+//         type: 'scatter',
+//         name: 'Position'
+//     }, {
+//         x: t,
+//         y: v,
+//         type: 'scatter',
+//         name: 'Velocity'
+//     }, {
+//         x: t,
+//         y: a,
+//         type: 'scatter',
+//         name: 'Acceleration'
+//     }], {
+//         xaxis : { title: 'Time (s)' },
+//         title : `Simulation`
+//     })
+// }
